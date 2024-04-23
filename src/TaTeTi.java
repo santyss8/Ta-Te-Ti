@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
+
 
 public class TaTeTi {
     // Atributos
@@ -28,26 +30,36 @@ public class TaTeTi {
             System.out.println("Turno del jugador: " + turno.getFicha());
 
             int fila,columna;
-            do {
-                System.out.println("Ingrese la fila (1-3): ");
-                fila = scanner.nextInt() -1;
-                System.out.println("Ingrese la columna (1-3): ");
-                columna = scanner.nextInt() -1;
-            }while (!esCasillaValida(fila, columna));{
-                tablero.marcarCasilla(fila, columna, turno);
-                if (tablero.hayGanador()){
-                    tablero.mostrarTablero();
-                    System.out.println("¡¡¡El jugador " + turno.getFicha() + " Ha Ganado!!!");
-                    juegoTerminado = true;
-                } else if (tablero.hayEmpate()) {
-                    tablero.mostrarTablero();
-                    System.out.println("Hay un empate");
-                    juegoTerminado = true;
+            try {
+                do {
+                    System.out.println("Ingrese la fila (1-3): ");
+                    fila = scanner.nextInt() -1;
+                    System.out.println("Ingrese la columna (1-3): ");
+                    columna = scanner.nextInt() -1;
+                }while (!esCasillaValida(fila, columna));{
+                    tablero.marcarCasilla(fila, columna, turno);
+                    if (tablero.hayGanador()){
+                        tablero.mostrarTablero();
+                        System.out.println("¡¡¡El jugador " + turno.getFicha() + " Ha Ganado!!!");
+                        juegoTerminado = true;
+                    } else if (tablero.hayEmpate()) {
+                        tablero.mostrarTablero();
+                        System.out.println("Hay un empate");
+                        juegoTerminado = true;
 
-                }else {
-                    cambiarTurno();
+                    }else {
+                        cambiarTurno();
+                    }
                 }
+
+            }catch (InputMismatchException e){
+                System.out.println("Error: Tienes que ingresar numeros");
+                scanner.nextLine();
+
+            }catch (Exception e){
+                System.out.println("Ha ocurrido un error");
             }
+
         }
 
 
@@ -68,6 +80,9 @@ public class TaTeTi {
     private void cambiarTurno() {
         turno = (turno == jugadorX) ? jugadorO : jugadorX;
     }
+
+
+
 
 
 
